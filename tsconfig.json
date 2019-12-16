@@ -1,0 +1,20 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "target": "es6",
+    "rootDir": "./src",
+    "module": "commonjs",
+    "outDir": "./dist",
+    "lib": ["es2017", "es7", "es6", "dom"],
+    "declaration": true,
+    "strict": true
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts",
+    "dist"
+  ]
+}
