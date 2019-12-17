@@ -1,3 +1,5 @@
+import { cover, contain } from './utils/resize-modes'
+
 interface CanvasCarouselInterface {
   espera?: any
 }
@@ -67,53 +69,46 @@ export const CanvasCarousel = async function (this: CanvasCarouselInterface, opt
     })
   }
 
-  function renderImage (image: HTMLImageElement, x = 0, y = 0) {
-    console.log(image.naturalWidth, image.naturalHeight)
+  function renderImage (image: HTMLImageElement, destX = 0, destY = 0) {
     if (resizeMode === 'cover') {
-      const naturalWidth = image.naturalWidth
-      const naturalHeight = image.naturalHeight
-      const coordinatesToDraw = [x, y]
+      const {
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+      } = cover(image, canvas)
 
-      let width, height
-
-      if (naturalWidth < naturalHeight && canvas.width > canvas.height) {
-        width = canvas.width
-        height = (canvas.width / naturalWidth) * naturalHeight
-        // coordinatesToDraw[1] -= (canvas.height / 2) + (height / 2)
-      } else {
-        width = (canvas.height / naturalHeight) * naturalWidth
-        height = canvas.height
-        // coordinatesToDraw[0] -= (canvas.width / 2) + (width / 2)
-      }
-
-      // console.log(image, x, y, canvas.width, canvas.height, x, y, 3164, 2012.8)
-
-      const sourceX = 0
-      const sourceY = 0
-      const sourceWidth = 150
-      const sourceHeight = 150
-      const destWidth = width
-      const destHeight = height
-      const destX = canvas.width / 2 - destWidth / 2
-      const destY = canvas.height / 2 - destHeight / 2
-
-      ctx.drawImage(image,
-        sourceX, sourceY,
-        sourceWidth, sourceHeight,
-        destX, destY,
-        destWidth, destHeight
+      ctx.drawImage(
+        image,
+        sourceX,
+        sourceY,
+        sourceWidth,
+        sourceHeight,
+        destX,
+        destY,
+        canvas.width,
+        canvas.height
       )
-
-      // ctx.drawImage(
-      //   image,
-      //   x, y,
-      //   width, height,
-      //   canvas.width / 2 - width / 2, canvas.height / 2 - height / 2,
-      //   width, height
-      // )
     }
-    // const width =
-    // ctx.drawImage(image, 0, 0, canvas.width, canvas.height, 0, 0)
+
+    if (resizeMode === 'contain') {
+      const {
+        sourceWidth,
+        sourceHeight,
+      } = contain(image, canvas)
+
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        sourceWidth,
+        sourceHeight,
+        destX,
+        destY,
+        canvas.width,
+        canvas.height
+      )
+    }
   }
 } as any as {
   new (options: OptionsInterface): CanvasCarouselInterface
