@@ -5,8 +5,8 @@ const canvas = document.querySelector('canvas')
 if (canvas) {
   const canvasCarousel = new CanvasCarousel({
     canvas,
-    images: Array(5).fill('https://www.urbanarts.com.br/imagens/produtos/272711/0/Ampliada/color-tv.jpg'),
-    resizeMode: 'contain',
+    images: Array(5).fill('https://static.escolakids.uol.com.br/2019/07/paisagem-natural.jpg'),
+    resizeMode: 'center',
   })
 }
 

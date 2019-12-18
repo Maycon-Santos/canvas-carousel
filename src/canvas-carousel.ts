@@ -1,4 +1,4 @@
-import { cover, contain } from './utils/resize-modes'
+import { cover, contain, center } from './utils/resize-modes'
 
 interface CanvasCarouselInterface {
   espera?: any
@@ -93,20 +93,64 @@ export const CanvasCarousel = async function (this: CanvasCarouselInterface, opt
 
     if (resizeMode === 'contain') {
       const {
-        sourceWidth,
-        sourceHeight,
+        destXOffset,
+        destYOffset,
+        destWidth,
+        destHeight,
       } = contain(image, canvas)
 
       ctx.drawImage(
         image,
         0,
         0,
-        sourceWidth,
-        sourceHeight,
+        image.naturalWidth,
+        image.naturalHeight,
+        destX + destXOffset,
+        destY + destYOffset,
+        destWidth,
+        destHeight
+      )
+    }
+
+    if (resizeMode === 'stretch') {
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        image.naturalWidth,
+        image.naturalHeight,
         destX,
         destY,
         canvas.width,
         canvas.height
+      )
+    }
+
+    if (resizeMode === 'repeat') {
+      const pattern = ctx.createPattern(image, 'repeat')
+
+      if (pattern) {
+        ctx.fillStyle = pattern
+        ctx.fillRect(destX, destX, canvas.width, canvas.height)
+      }
+    }
+
+    if (resizeMode === 'center') {
+      const {
+        destXOffset,
+        destYOffset,
+      } = center(image, canvas)
+
+      ctx.drawImage(
+        image,
+        0,
+        0,
+        image.naturalWidth,
+        image.naturalHeight,
+        destX + destXOffset,
+        destY + destYOffset,
+        image.naturalWidth,
+        image.naturalHeight,
       )
     }
   }
